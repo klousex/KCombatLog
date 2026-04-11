@@ -29,6 +29,15 @@ import java.util.stream.Collectors;
 
 public final class CombatManager {
 
+    public enum TagEligibilityFailure {
+        NONE,
+        NULL_OR_OFFLINE,
+        DEAD,
+        BYPASS_PERMISSION,
+        DISABLED_WORLD,
+        NON_SURVIVAL_MODE
+    }
+
     public enum CommandBlockMode {
         BLACKLIST,
         WHITELIST
@@ -46,6 +55,7 @@ public final class CombatManager {
     private final Map<UUID, CombatTag> tags = new ConcurrentHashMap<>();
     private final Map<UUID, BossBar> bossBars = new ConcurrentHashMap<>();
     private final Map<UUID, java.util.Deque<CombatHistoryEntry>> history = new ConcurrentHashMap<>();
+    private final Map<UUID, String> lastTagSkipReasons = new ConcurrentHashMap<>();
     private BukkitTask task;
 
     private int durationSeconds;
@@ -73,6 +83,7 @@ public final class CombatManager {
     private double minimumFinalDamageToTag;
     private boolean ignoreSelfDamageTagging;
     private int historyLimit;
+    private boolean diagnosticsLogTagSkips;
     private CommandBlockMode commandBlockMode;
     private CombatLogPunishmentMode combatLogPunishmentMode;
 
@@ -147,6 +158,7 @@ public final class CombatManager {
         this.minimumFinalDamageToTag = Math.max(0.0D, config.getDouble("settings.damage.minimum-final-damage-to-tag", 0.1D));
         this.ignoreSelfDamageTagging = config.getBoolean("settings.damage.ignore-self-damage-tagging", true);
         this.historyLimit = Math.max(1, config.getInt("settings.history-limit", 15));
+        this.diagnosticsLogTagSkips = config.getBoolean("settings.diagnostics.log-tag-skip-reasons", true);
         this.commandBlockMode = parseMode(config.getString("settings.command-block-mode", "BLACKLIST"));
         this.combatLogPunishmentMode = parseCombatLogMode(config);
 
@@ -242,7 +254,20 @@ public final class CombatManager {
     }
 
     public void tag(Player first, Player second) {
-        if (!canBeTagged(first) || !canBeTagged(second)) {
+        TagEligibilityFailure firstFailure = getTagEligibilityFailure(first);
+        TagEligibilityFailure secondFailure = getTagEligibilityFailure(second);
+        if (firstFailure != TagEligibilityFailure.NONE || secondFailure != TagEligibilityFailure.NONE) {
+            if (firstFailure != TagEligibilityFailure.NONE) {
+                noteTagSkipped(first, "cannot-tag-" + formatEligibilityFailure(firstFailure));
+            }
+            if (secondFailure != TagEligibilityFailure.NONE) {
+                noteTagSkipped(second, "cannot-tag-" + formatEligibilityFailure(secondFailure));
+            }
+            if (diagnosticsLogTagSkips) {
+                plugin.getLogger().info("Skipping combat tag. attacker="
+                        + safeName(first) + " (" + formatEligibilityFailure(firstFailure) + ")"
+                        + ", victim=" + safeName(second) + " (" + formatEligibilityFailure(secondFailure) + ")");
+            }
             return;
         }
 
@@ -267,22 +292,29 @@ public final class CombatManager {
     }
 
     public boolean canBeTagged(Player player) {
-        if (player == null || !player.isOnline() || player.isDead()) {
-            return false;
+        return getTagEligibilityFailure(player) == TagEligibilityFailure.NONE;
+    }
+
+    public TagEligibilityFailure getTagEligibilityFailure(Player player) {
+        if (player == null || !player.isOnline()) {
+            return TagEligibilityFailure.NULL_OR_OFFLINE;
+        }
+        if (player.isDead()) {
+            return TagEligibilityFailure.DEAD;
         }
         if (player.hasPermission("wobblecombat.bypass")) {
-            return false;
+            return TagEligibilityFailure.BYPASS_PERMISSION;
         }
         if (isDisabledWorld(player.getWorld())) {
-            return false;
+            return TagEligibilityFailure.DISABLED_WORLD;
         }
         if (ignoreNonSurvival) {
             GameMode mode = player.getGameMode();
             if (mode == GameMode.CREATIVE || mode == GameMode.SPECTATOR) {
-                return false;
+                return TagEligibilityFailure.NON_SURVIVAL_MODE;
             }
         }
-        return true;
+        return TagEligibilityFailure.NONE;
     }
 
     public boolean isDisabledWorld(World world) {
@@ -345,6 +377,47 @@ public final class CombatManager {
 
     public boolean shouldTagForDamage(double finalDamage, double baseDamage) {
         return Math.max(finalDamage, baseDamage) >= minimumFinalDamageToTag;
+    }
+
+    public void noteTagSkipped(Player player, String reason) {
+        if (player == null) {
+            return;
+        }
+        String message = reason == null || reason.isBlank() ? "unknown" : reason;
+        lastTagSkipReasons.put(player.getUniqueId(), message);
+    }
+
+    public String getLastTagSkipReason(Player player) {
+        if (player == null) {
+            return "unknown";
+        }
+        return lastTagSkipReasons.getOrDefault(player.getUniqueId(), "none");
+    }
+
+    public double getMinimumFinalDamageToTag() {
+        return minimumFinalDamageToTag;
+    }
+
+    public String describeEligibility(Player player) {
+        return formatEligibilityFailure(getTagEligibilityFailure(player));
+    }
+
+    private String formatEligibilityFailure(TagEligibilityFailure failure) {
+        if (failure == null) {
+            return "unknown";
+        }
+        return switch (failure) {
+            case NONE -> "eligible";
+            case NULL_OR_OFFLINE -> "offline-or-null";
+            case DEAD -> "dead";
+            case BYPASS_PERMISSION -> "bypass-permission";
+            case DISABLED_WORLD -> "disabled-world";
+            case NON_SURVIVAL_MODE -> "non-survival-mode";
+        };
+    }
+
+    private String safeName(Player player) {
+        return player == null ? "null" : player.getName();
     }
 
     public boolean shouldIgnoreSelfDamageTagging() {

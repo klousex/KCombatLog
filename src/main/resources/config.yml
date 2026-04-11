@@ -60,6 +60,9 @@ settings:
   damage:
     minimum-final-damage-to-tag: 0.1
     ignore-self-damage-tagging: true
+  diagnostics:
+    # Log exact reasons when a tag attempt is skipped (bypass/world/gamemode/etc).
+    log-tag-skip-reasons: true
   staff-notify:
     combat-log:
       enabled: false
