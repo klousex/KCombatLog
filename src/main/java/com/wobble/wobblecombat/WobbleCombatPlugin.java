@@ -16,9 +16,12 @@ import com.wobble.wobblecombat.listener.StateListener;
 import com.wobble.wobblecombat.storage.CombatHistoryStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public final class WobbleCombatPlugin extends JavaPlugin {
@@ -61,6 +64,7 @@ public final class WobbleCombatPlugin extends JavaPlugin {
         command.setTabCompleter(executor);
 
         registerPlaceholderExpansion();
+        logBypassPermissionSnapshot();
         getLogger().info("WobbleCombat enabled.");
     }
 
@@ -92,6 +96,19 @@ public final class WobbleCombatPlugin extends JavaPlugin {
         combatManager.loadHistory(historyStorage.load());
         startHistoryAutosave();
         registerPlaceholderExpansion();
+        logBypassPermissionSnapshot();
+    }
+
+    private void logBypassPermissionSnapshot() {
+        List<String> bypassPlayers = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.hasPermission("wobblecombat.bypass")) {
+                bypassPlayers.add(player.getName());
+            }
+        }
+        if (!bypassPlayers.isEmpty()) {
+            getLogger().warning("Players currently inheriting wobblecombat.bypass: " + String.join(", ", bypassPlayers));
+        }
     }
 
     private void startHistoryAutosave() {

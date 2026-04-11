@@ -146,6 +146,9 @@ private boolean handleDebug(CommandSender sender, String[] args) {
     sendDebugLine(sender, target, "attacker", combatManager.getLastAttackerName(target));
     sendDebugLine(sender, target, "world", target.getWorld().getName());
     sendDebugLine(sender, target, "bypass", String.valueOf(target.hasPermission("wobblecombat.bypass")));
+    sendDebugLine(sender, target, "eligibility", combatManager.describeEligibility(target));
+    sendDebugLine(sender, target, "last_tag_skip_reason", combatManager.getLastTagSkipReason(target));
+    sendDebugLine(sender, target, "minimum_damage_to_tag", String.valueOf(combatManager.getMinimumFinalDamageToTag()));
     sendDebugLine(sender, target, "history_entries", String.valueOf(combatManager.getHistoryCount(target)));
     sendDebugLine(sender, target, "tracked_players", String.valueOf(combatManager.getTrackedPlayerCount()));
     sendDebugLine(sender, target, "punishment_mode", combatManager.getCombatLogPunishmentMode().name());

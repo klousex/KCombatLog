@@ -38,15 +38,19 @@ public final class CombatListener implements Listener {
         if (!(event.getEntity() instanceof Player victim)) {
             return;
         }
-        if (!combatManager.shouldTagForDamage(event.getFinalDamage(), event.getDamage())) {
-            return;
-        }
 
         Player attacker = resolveDamagingPlayer(event.getDamager(), 0);
         if (attacker == null) {
+            combatManager.noteTagSkipped(victim, "damager-not-player");
+            return;
+        }
+        if (!combatManager.shouldTagForDamage(event.getFinalDamage(), event.getDamage())) {
+            combatManager.noteTagSkipped(victim, "below-min-damage-threshold");
+            combatManager.noteTagSkipped(attacker, "below-min-damage-threshold");
             return;
         }
         if (attacker.getUniqueId().equals(victim.getUniqueId()) && combatManager.shouldIgnoreSelfDamageTagging()) {
+            combatManager.noteTagSkipped(victim, "self-damage-ignored");
             return;
         }
 
