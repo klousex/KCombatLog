@@ -1,6 +1,6 @@
 name: WCombatLog
 version: '1.0.0'
-main: com.wobble.wobblecombat.WobbleCombatPlugin
+main: com.wobble.wcombatlog.WCombatLogPlugin
 api-version: '1.21'
 authors: [Wobble]
 description: Combat tag plugin inspired by Donut-style servers.
@@ -8,29 +8,29 @@ website: https://github.com/mororpm
 loadbefore: [EmeraldAura]
 softdepend: [PlaceholderAPI]
 commands:
-  wobblecombat:
-    description: Main command for WobbleCombat.
+  wcombatlog:
+    description: Main command for WCombatLog.
     usage: /<command> reload | status [player] | history [player] | debug [player] | clear <player> | savehistory | forcetag <attacker> <victim>
     aliases: [wc, combatreload]
 permissions:
-  wobblecombat.reload:
-    description: Allows reloading WobbleCombat.
+  wcombatlog.reload:
+    description: Allows reloading WCombatLog.
     default: op
   donutcombat.reload:
     description: Legacy compatibility permission alias.
     default: op
-  wobblecombat.status:
+  wcombatlog.status:
     description: Allows viewing combat status.
     default: op
-  wobblecombat.admin:
+  wcombatlog.admin:
     description: Allows admin combat control commands.
     default: op
-  wobblecombat.debug:
+  wcombatlog.debug:
     description: Allows viewing internal combat debug data.
     default: op
-  wobblecombat.bypass:
+  wcombatlog.bypass:
     description: Bypass combat tag and command restrictions.
     default: false
-  wobblecombat.notify:
+  wcombatlog.notify:
     description: Allows receiving combat-log staff notifications.
     default: op

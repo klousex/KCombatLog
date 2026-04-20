@@ -45,25 +45,25 @@ WCombatLog prevents players from escaping combat abuse by logging out, teleporti
 ## Commands
 
 ### Player / Admin
-- `/wobblecombat reload`
-- `/wobblecombat status [player]`
-- `/wobblecombat history [player]`
-- `/wobblecombat debug [player]`
-- `/wobblecombat clear <player>`
-- `/wobblecombat forcetag <attacker> <victim>`
-- `/wobblecombat savehistory`
+- `/wcombatlog reload`
+- `/wcombatlog status [player]`
+- `/wcombatlog history [player]`
+- `/wcombatlog debug [player]`
+- `/wcombatlog clear <player>`
+- `/wcombatlog forcetag <attacker> <victim>`
+- `/wcombatlog savehistory`
 
 ### Aliases
 - `/wc`
 
 ## Permissions
 
-- `wobblecombat.reload` — reload configuration
-- `wobblecombat.status` — view combat status
-- `wobblecombat.debug` — view debug data
-- `wobblecombat.admin` — admin-only controls
-- `wobblecombat.notify` — receive staff combat-log notifications
-- `wobblecombat.bypass` — bypass combat restrictions
+- `wcombatlog.reload` — reload configuration
+- `wcombatlog.status` — view combat status
+- `wcombatlog.debug` — view debug data
+- `wcombatlog.admin` — admin-only controls
+- `wcombatlog.notify` — receive staff combat-log notifications
+- `wcombatlog.bypass` — bypass combat restrictions
 
 Compatibility alias retained:
 - `donutcombat.reload`
@@ -72,11 +72,11 @@ Compatibility alias retained:
 
 Included placeholders:
 
-- `%wobblecombat_player%`
-- `%wobblecombat_world%`
-- `%wobblecombat_time%`
-- `%wobblecombat_attacker%`
-- `%wobblecombat_status%`
+- `%wcombatlog_player%`
+- `%wcombatlog_world%`
+- `%wcombatlog_time%`
+- `%wcombatlog_attacker%`
+- `%wcombatlog_status%`
 
 ## Storage
 
