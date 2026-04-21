@@ -1,8 +1,8 @@
-# WCombatLog
+# KCombatLog
 
 Production-ready combat tag plugin for Paper servers.
 
-WCombatLog prevents players from escaping combat abuse by logging out, teleporting away, or bypassing PvP pressure with restricted actions during an active fight. The plugin is built for servers that want clear combat state, admin control, and extensibility for future ecosystem integrations.
+KCombatLog prevents players from escaping combat abuse by logging out, teleporting away, or bypassing PvP pressure with restricted actions during an active fight. The plugin is built for servers that want clear combat state, admin control, and extensibility for future ecosystem integrations.
 
 ## Features
 
@@ -45,25 +45,25 @@ WCombatLog prevents players from escaping combat abuse by logging out, teleporti
 ## Commands
 
 ### Player / Admin
-- `/wcombatlog reload`
-- `/wcombatlog status [player]`
-- `/wcombatlog history [player]`
-- `/wcombatlog debug [player]`
-- `/wcombatlog clear <player>`
-- `/wcombatlog forcetag <attacker> <victim>`
-- `/wcombatlog savehistory`
+- `/kcombatlog reload`
+- `/kcombatlog status [player]`
+- `/kcombatlog history [player]`
+- `/kcombatlog debug [player]`
+- `/kcombatlog clear <player>`
+- `/kcombatlog forcetag <attacker> <victim>`
+- `/kcombatlog savehistory`
 
 ### Aliases
 - `/wc`
 
 ## Permissions
 
-- `wcombatlog.reload` — reload configuration
-- `wcombatlog.status` — view combat status
-- `wcombatlog.debug` — view debug data
-- `wcombatlog.admin` — admin-only controls
-- `wcombatlog.notify` — receive staff combat-log notifications
-- `wcombatlog.bypass` — bypass combat restrictions
+- `kcombatlog.reload` — reload configuration
+- `kcombatlog.status` — view combat status
+- `kcombatlog.debug` — view debug data
+- `kcombatlog.admin` — admin-only controls
+- `kcombatlog.notify` — receive staff combat-log notifications
+- `kcombatlog.bypass` — bypass combat restrictions
 
 Compatibility alias retained:
 - `donutcombat.reload`
@@ -72,11 +72,11 @@ Compatibility alias retained:
 
 Included placeholders:
 
-- `%wcombatlog_player%`
-- `%wcombatlog_world%`
-- `%wcombatlog_time%`
-- `%wcombatlog_attacker%`
-- `%wcombatlog_status%`
+- `%kcombatlog_player%`
+- `%kcombatlog_world%`
+- `%kcombatlog_time%`
+- `%kcombatlog_attacker%`
+- `%kcombatlog_status%`
 
 ## Storage
 
@@ -101,9 +101,9 @@ settings:
 
 Available Bukkit events:
 
-- `WCombatLogTagEvent`
-- `WCombatLogUntagEvent`
-- `WCombatLogLogEvent`
+- `KCombatLogTagEvent`
+- `KCombatLogUntagEvent`
+- `KCombatLogLogEvent`
 
 ## Build
 
@@ -114,7 +114,7 @@ mvn clean package
 Output:
 
 ```bash
-target/WCombatLog-1.0.0.jar
+target/KCombatLog-1.0.0.jar
 ```
 
 ## Requirements
@@ -132,7 +132,7 @@ target/WCombatLog-1.0.0.jar
 
 ## Release Notes Summary
 
-WCombatLog 1.0.0 is the first stable release of the plugin. It includes production-focused combat tagging, punishments, storage backends, PlaceholderAPI integration, admin tooling, and anti-abuse protections intended for serious survival and PvP servers.
+KCombatLog 1.0.0 is the first stable release of the plugin. It includes production-focused combat tagging, punishments, storage backends, PlaceholderAPI integration, admin tooling, and anti-abuse protections intended for serious survival and PvP servers.
 
 ## License
 

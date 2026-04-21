@@ -42,7 +42,7 @@ settings:
   command-block-mode: BLACKLIST
   # Apply PlaceholderAPI placeholders in messages if plugin exists.
   use-placeholderapi-if-available: true
-  # Register %wcombatlog_*% placeholders in PlaceholderAPI.
+  # Register %kcombatlog_*% placeholders in PlaceholderAPI.
   register-placeholderapi-expansion: true
   # Close chest / menu inventories immediately when a player gets tagged.
   close-open-inventory-on-tag: false
@@ -66,8 +66,8 @@ settings:
   staff-notify:
     combat-log:
       enabled: false
-      permission: wcombatlog.notify
-      format: "&8[&cWCombatLog&8] &f{player} &7logged during combat. &8(&f{attacker}&8)"
+      permission: kcombatlog.notify
+      format: "&8[&cKCombatLog&8] &f{player} &7logged during combat. &8(&f{attacker}&8)"
 
   # Stored in-memory history entries per player for /wc history
   history-limit: 15

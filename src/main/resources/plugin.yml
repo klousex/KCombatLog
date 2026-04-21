@@ -1,36 +1,36 @@
-name: WCombatLog
+name: KCombatLog
 version: '1.0.0'
-main: com.wobble.wcombatlog.WCombatLogPlugin
+main: com.klouse.kcombatlog.KCombatLogPlugin
 api-version: '1.21'
-authors: [Wobble]
+authors: [Klouse]
 description: Combat tag plugin inspired by Donut-style servers.
 website: https://github.com/mororpm
 loadbefore: [EmeraldAura]
 softdepend: [PlaceholderAPI]
 commands:
-  wcombatlog:
-    description: Main command for WCombatLog.
+  kcombatlog:
+    description: Main command for KCombatLog.
     usage: /<command> reload | status [player] | history [player] | debug [player] | clear <player> | savehistory | forcetag <attacker> <victim>
     aliases: [wc, combatreload]
 permissions:
-  wcombatlog.reload:
-    description: Allows reloading WCombatLog.
+  kcombatlog.reload:
+    description: Allows reloading KCombatLog.
     default: op
   donutcombat.reload:
     description: Legacy compatibility permission alias.
     default: op
-  wcombatlog.status:
+  kcombatlog.status:
     description: Allows viewing combat status.
     default: op
-  wcombatlog.admin:
+  kcombatlog.admin:
     description: Allows admin combat control commands.
     default: op
-  wcombatlog.debug:
+  kcombatlog.debug:
     description: Allows viewing internal combat debug data.
     default: op
-  wcombatlog.bypass:
+  kcombatlog.bypass:
     description: Bypass combat tag and command restrictions.
     default: false
-  wcombatlog.notify:
+  kcombatlog.notify:
     description: Allows receiving combat-log staff notifications.
     default: op
